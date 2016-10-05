@@ -50,7 +50,7 @@ apt-get install debhelper devscripts
 /usr/bin/debuild --no-tgz-check -us -uc
 ```
 
-# Como Instalar el paquete generado vx-dga-l-lupa*.deb:
+# Como Instalar el paquete generado vx-dga-l-*.deb:
 Para la instalación de paquetes que estan en el equipo local puede hacerse uso de ***dpkg*** o de ***gdebi***, siendo este último el más aconsejado para que se instalen también las dependencias correspondientes.
 ```
 gdebi vx-dga-l-*.deb
