@@ -21,18 +21,41 @@ set -e
 case "$1" in
     configure)
 
-		RESOLUCION=$(/usr/bin/obtener-resolucion-pantalla)
+		RESOLUCION=$(/usr/bin/obtener-resolucion-pantalla 2> /dev/null)
 		_FILE1=/usr/share/lubuntu/wallpapers/vitalinux-edu-wallpaper.png
 		_FILE2=/usr/share/lubuntu/wallpapers/vitalinux-login.png
-
+		
+		if [[ "${RESOLUCION}" != "4:3" && "${RESOLUCION}" != "16:9" ]] ; then
+			echo "--> La resolución de tu pantalla no es ni 4:3 ni 16:9 -> $RESOLUCION"
+			COCIENTE43=$(echo "scale=4;(4/3)" | bc)
+			COCIENTE169=$(echo "scale=4;(16/9)" | bc)
+			COCIENTERES=$(echo "scale=4;(echo $RESOLUCION | tr -s ':' '/')" | bc)
+			# Obtenemos el valor absoluto para saber cual es la resolución más cercana
+			if [[ `echo "scale=4;($COCIENTERES - $COCIENTE43)" |  bc  | nawk '{ print ($1 >= 0) ? $1 : 0 - $1}'` > \
+				`echo "scale=4;($COCIENTERES - $COCIENTE169)" |  bc  | nawk '{ print ($1 >= 0) ? $1 : 0 - $1}'` ]] ; then
+				RESOLUCION="16:9"
+			else
+				RESOLUCION="4:9"
+			fi
+			echo "--> Se va a adoptar como resolución más cercana a la tuya la $RESOLUCION"
+		fi
 		case $RESOLUCION in
 			"4:3" )
+			echo "--> Pasamos a crear los links a los wallpapers para 4:3 ..."
 			ln -sf /usr/share/divert/usr/share/lubuntu/wallpapers/vitalinux-edu-wallpaper-4x3-1600x1200.png \
 				/usr/share/divert$_FILE1
 			ln -sf /usr/share/divert/usr/share/lubuntu/wallpapers/vitalinux-login-4x3-1600x1200.png \
 				/usr/share/divert$_FILE2
 			;;
+			"16:9" )
+			echo "--> Pasamos a crear los links a los wallpapers para 16:9 ..."
+			ln -sf /usr/share/divert/usr/share/lubuntu/wallpapers/vitalinux-edu-wallpaper-16x9-1920x1080.png \
+				/usr/share/divert$_FILE1
+			ln -sf /usr/share/divert/usr/share/lubuntu/wallpapers/vitalinux-login-16x9-1920x1080.png \
+				/usr/share/divert$_FILE2
+			;;
 			* )
+			echo "--> Pasamos a crear los links a los wallpapers para 16:9 por descarte ..."
 			ln -sf /usr/share/divert/usr/share/lubuntu/wallpapers/vitalinux-edu-wallpaper-16x9-1920x1080.png \
 				/usr/share/divert$_FILE1
 			ln -sf /usr/share/divert/usr/share/lubuntu/wallpapers/vitalinux-login-16x9-1920x1080.png \
