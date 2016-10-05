@@ -1,0 +1,14 @@
+Source: vx-dga-l-imagen-fondo-escritorio
+Section: utils
+Priority: extra
+Maintainer: Arturo Martín <amartinromero@gmail.com>
+Build-Depends: debhelper (>= 8.0.0)
+Standards-Version: 3.9.3
+Homepage: http://soporte.vitalinux.educa.aragon.es
+
+Package: vx-dga-l-imagen-fondo-escritorio
+Architecture: all
+Depends: ${misc:Depends}, vx-dga-l-scripts
+Pre-Depends: vx-dga-l-scripts (>=3.0-3)
+Description: Personaliza el fondo de Escritorio de Vitalinux
+ Personaliza el fondo por defecto de Escritorio de Vitalinux
